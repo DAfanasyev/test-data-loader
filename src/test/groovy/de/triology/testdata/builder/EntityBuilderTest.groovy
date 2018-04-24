@@ -23,9 +23,9 @@
  */
 package de.triology.testdata.builder
 
-import de.triology.testdata.builder.EntitiesScriptExecutor
-import de.triology.testdata.builder.EntityBuilder
 import spock.lang.Specification
+
+import javax.persistence.EntityManager
 
 class EntityBuilderTest extends Specification {
 
@@ -42,9 +42,12 @@ class EntityBuilderTest extends Specification {
     EntitiesScriptExecutor executor
     EntityBuilder builder
 
+    EntityManager entityManager
+
     def setup() {
         executor = Mock()
-        builder = new EntityBuilder(executor)
+        entityManager = Mock()
+        builder = new EntityBuilder(executor, entityManager)
     }
 
     def "should create single instance and set single property" () {

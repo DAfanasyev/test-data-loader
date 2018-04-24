@@ -119,7 +119,7 @@ class TestDataLoader implements EntityBuilderListener {
      */
     void loadTestData(Collection<String> entityDefinitionFiles) {
         EntityPersister persister = new EntityPersister(entityManager)
-        EntitiesScriptExecutor scriptExecutor = new EntitiesScriptExecutor()
+        EntitiesScriptExecutor scriptExecutor = new EntitiesScriptExecutor(entityManager)
                 .addEntityBuilderListener(this)
                 .addEntityBuilderListener(persister)
                 .addEntityBuilderListener(entityDeleter)
@@ -198,6 +198,11 @@ class TestDataLoader implements EntityBuilderListener {
 
     @Override
     public void onEntityCreated(String name, Object entity) {
+        loadedEntities[name]=entity
+    }
+
+    @Override
+    public void onEntityLoaded(String name, Object entity) {
         loadedEntities[name]=entity
     }
 

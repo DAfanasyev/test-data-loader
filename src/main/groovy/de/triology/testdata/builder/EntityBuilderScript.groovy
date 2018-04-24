@@ -29,4 +29,8 @@ abstract class EntityBuilderScript extends Script {
     @Delegate
     @Lazy
     EntityBuilder builder = this.binding.builder
+
+    private def propertyMissing(final String name) {
+        return builder.propertyMissing(name)
+    }
 }

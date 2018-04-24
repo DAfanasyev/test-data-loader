@@ -44,4 +44,9 @@ class EntityPersister implements EntityBuilderListener {
     public void onEntityCreated(String name, Object entity) {
         entityManager.persist(entity)
     }
+
+    @Override
+    public void onEntityLoaded(String name, Object entity) {
+        // Loaded entities have already been persisted
+    }
 }

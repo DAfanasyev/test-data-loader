@@ -58,7 +58,11 @@ class EntityDeleter implements EntityBuilderListener {
         entities.push(entity)
     }
 
-    /**
+    @Override
+    public void onEntityLoaded(String name, Object entity) {
+        // Loaded entities are not deleted
+    }
+/**
      * Deletes all previously created entities from the database using the instance's EntityManager.
      */
     protected deleteAllEntities() {

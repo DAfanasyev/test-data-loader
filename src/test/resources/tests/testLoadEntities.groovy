@@ -21,27 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.triology.testdata.builder
+import de.triology.testdata.loader.testentities.Department
+import de.triology.testdata.loader.testentities.User
 
-/**
- * Listener for entity creation. Gets notified every time an entity is completely created.
- */
-interface EntityBuilderListener {
+create Department, "Department1_1", { id = 1; name = "Department1" }
+create Department, "Department2_1", { id = 2; name = "Department2" }
+create Department, "Department3_1", { id = 3; name = "Department3" }
 
-    /**
-     * Is called every time an entity is completely created, including all referenced entities.
-     *
-     * @param name the name of the entity created
-     * @param entity the created entity
-     */
-    void onEntityCreated(String name, Object entity)
+load Department, 'Department1_2', Department1_1.id
+load Department, 'Department2_2', Department2_1.id
+load Department, 'Department3_2', Department3_1.id
 
-    /**
-     * Is called every time an entity is loaded.
-     *
-     * @param name the name of the entity loaded
-     * @param entity the loaded entity
-     */
-    void onEntityLoaded(String name, Object entity)
+loadAll Department, { d -> d.name + "_3" }
 
-}
+create User, "User1", { id = 1; department = Department1_2 }
+create User, 'User2', { id = 2; department = Department2_2 }
+create User, 'User3', { id = 3; department = Department3_2 }
+
+create User, "User4", { id = 4; department = Department1_3 }
+create User, 'User5', { id = 5; department = Department2_3 }
+create User, 'User6', { id = 6; department = Department3_3 }

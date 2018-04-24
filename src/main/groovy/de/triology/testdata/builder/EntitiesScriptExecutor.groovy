@@ -25,6 +25,8 @@ package de.triology.testdata.builder
 
 import org.codehaus.groovy.control.CompilerConfiguration
 
+import javax.persistence.EntityManager
+
 /**
  * Executes a groovy script file with entity definitions.
  */
@@ -32,20 +34,25 @@ class EntitiesScriptExecutor {
 
     private List<EntityBuilderListener> listeners = []
 
-    /**
-     * Executes a groovy script file with entity definitions provided by the passed Reader.
-     *
-     * @param reader - a Reader for the file containing the entity definitions.
-     */
+    private EntityManager entityManager
+
+    EntitiesScriptExecutor(EntityManager entityManager) {
+        this.entityManager = entityManager
+    }
+/**
+ * Executes a groovy script file with entity definitions provided by the passed Reader.
+ *
+ * @param reader - a Reader for the file containing the entity definitions.
+ */
     public void execute(Reader reader) {
         CompilerConfiguration compilerConfiguration = new CompilerConfiguration()
         compilerConfiguration.scriptBaseClass = EntityBuilderScript.class.name
 
         Binding binding = new Binding()
-        binding.builder = new EntityBuilder(this)
+        binding.builder = new EntityBuilder(this, entityManager)
 
         GroovyShell shell = new GroovyShell(this.class.classLoader, binding, compilerConfiguration)
-        Script script =  shell.parse(reader)
+        Script script = shell.parse(reader)
         script.run()
     }
 
@@ -61,5 +68,8 @@ class EntitiesScriptExecutor {
     protected void fireEntityCreated(String entityName, Object entity) {
         listeners*.onEntityCreated(entityName, entity)
     }
-}
 
+    protected void fireEntityLoaded(String entityName, Object entity) {
+        listeners*.onEntityLoaded(entityName, entity)
+    }
+}

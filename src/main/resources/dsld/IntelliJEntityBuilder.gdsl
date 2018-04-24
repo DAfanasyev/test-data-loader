@@ -1,4 +1,6 @@
 contributor(context(scope: scriptScope())) {
     def clazz = findClass("de.triology.testdata.builder.EntityBuilder")
     add clazz.methods.find { it.name=="create" }
+    add clazz.methods.find { it.name=="load" }
+    add clazz.methods.find { it.name=="loadAll" }
 }
